@@ -46,17 +46,16 @@ self.addEventListener('fetch', function (event) {
   //            Otherwise fetch the resource, add it to the cache, and return
   //            network response.
   event.respondWith(
-    caches.open(CACHE_NAME).then(function (cache) {
-      return cache.match(event.request).then(function (response) {
+    caches.open(CACHE_NAME).then(cache => {
+      return cache.match(event.request).then(response => {
         if (response) {
           return response;
         }
-        return fetch(event.request).then(function (networkResponse) {
+        return fetch(event.request).then(networkResponse => {
           cache.put(event.request, networkResponse.clone());
           return networkResponse;
-        }).catch(function (error) {
-          console.error('[ServiceWorker] Fetch failed:', error);
-        });
+        }).catch(err => {
+          console.error(' Fetch failed:', err);        });
       });
     })
   );
